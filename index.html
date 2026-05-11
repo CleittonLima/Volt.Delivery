@@ -1,25 +1,197 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Robô Carteiro - Jogo de Lógica</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VOLT DELIVERY — Jogo Educacional de Lógica</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <head>
-        <h1>O Robô Carteiro</h1>
-        <p>Programe o Robô para que pegue a encomenda e entregue na caixa de correios</p>
-    </head>
 
-    <main class="containerPrincipal">
-        <section class="areaJogo">
-            <div class="tabuleiro" id="tabuleiro"></div>
-        </section>
+  <!-- ===================== TELA DE LOGIN ===================== -->
+  <div id="tela-login" class="tela ativa">
+    <div class="login-container">
+      <div class="login-logo">
+        <span class="robot-icon-big">🤖</span>
+        <h1 class="titulo-logo">VOLT<span class="dot">.DELIVEY</span></h1>
+        <p class="subtitulo">Aprenda lógica programando um robô</p>
+      </div>
+      <div class="login-form">
+        <label for="input-nome">Seu nome, programador(a):</label>
+        <input type="text" id="input-nome" placeholder="Ex: Ada Lovelace" maxlength="20" autocomplete="off" />
+        <button id="btn-iniciar" class="btn-primary">▶ INICIAR MISSÃO</button>
+      </div>
+      <div class="login-deco">
+        <span class="pixel-deco">◈</span><span class="pixel-deco">◉</span><span class="pixel-deco">◈</span>
+      </div>
+    </div>
+  </div>
 
-        <section class="painelControle">
-            <h2>Selecione os comandos</h2>
-        </section>
+  <!-- ===================== TELA DO JOGO ===================== -->
+  <div id="tela-jogo" class="tela">
 
+    <!-- HUD SUPERIOR -->
+    <header id="hud">
+      <div class="hud-left">
+        <span class="hud-robot-icon">🤖</span>
+        <div class="hud-info">
+          <span id="hud-nome" class="hud-nome">Jogador</span>
+          <span id="hud-fase" class="hud-fase">FASE 1</span>
+        </div>
+      </div>
+      <div class="hud-center">
+        <div class="hud-stat" id="hud-moedas-wrap">
+          <span class="hud-stat-icon">🪙</span>
+          <span id="hud-moedas">0</span>
+        </div>
+        <div class="hud-stat" id="hud-energia-wrap">
+          <span class="hud-stat-icon">⚡</span>
+          <span id="hud-energia">∞</span>
+        </div>
+        <div class="hud-stat">
+          <span class="hud-stat-icon">📋</span>
+          <span id="hud-cmds">0</span><span class="hud-stat-max" id="hud-cmds-max">/50</span>
+        </div>
+      </div>
+      <div class="hud-right">
+        <button id="btn-executar" class="btn-hud btn-exec">▶ EXECUTAR</button>
+        <button id="btn-voltar" class="btn-hud btn-voltar">↺ VOLTAR</button>
+        <button id="btn-apagar" class="btn-hud btn-apagar">✕ APAGAR</button>
+      </div>
+    </header>
+
+    <!-- ÁREA PRINCIPAL -->
+    <main id="area-principal">
+
+      <!-- GRID DO JOGO -->
+      <section id="area-grid">
+        <div id="grid-container">
+          <canvas id="grid-canvas"></canvas>
+          <!-- Preview de caminho desenhado sobre o canvas -->
+        </div>
+        <div id="energia-robo-display">⚡ <span id="energia-robo-val">∞</span></div>
+      </section>
+
+      <!-- PAINEL DIREITO -->
+      <aside id="painel-direito">
+
+        <!-- COMANDOS DISPONÍVEIS -->
+        <div id="area-comandos">
+          <h3 class="painel-titulo">🎮 COMANDOS</h3>
+          <div id="lista-comandos">
+            <!-- Blocos injetados pelo JS conforme fase -->
+          </div>
+        </div>
+
+        <!-- ÁREA DE PROGRAMAÇÃO -->
+        <div id="area-programacao">
+          <h3 class="painel-titulo">💻 PROGRAMA
+            <span id="contador-cmds" class="contador-tag">0/50</span>
+          </h3>
+          <div id="zona-drop" class="zona-drop">
+            <div id="lista-programa" class="lista-programa">
+              <!-- Blocos do programa montado pelo jogador -->
+            </div>
+            <div id="drop-hint" class="drop-hint">Arraste comandos aqui</div>
+          </div>
+        </div>
+
+        <!-- TUTORIAL -->
+        <div id="area-tutorial">
+          <div id="tutorial-texto" class="tutorial-box">
+            <span class="tutorial-icon">💡</span>
+            <span id="tutorial-msg">Monte seus comandos e clique em Executar!</span>
+          </div>
+        </div>
+
+      </aside>
     </main>
+
+  </div>
+
+  <!-- ===================== TELA DA LOJA ===================== -->
+  <div id="tela-loja" class="tela">
+    <div class="loja-container">
+      <h2 class="painel-titulo loja-titulo">🏪 MERCADO TECH</h2>
+      <div class="loja-moedas">Suas moedas: 🪙 <span id="loja-moedas">0</span></div>
+      <div class="loja-itens">
+        <div class="loja-item" data-custo="10" data-tipo="energia">
+          <span class="loja-item-icon">⚡</span>
+          <span class="loja-item-nome">+5 Energia</span>
+          <span class="loja-item-preco">🪙 10</span>
+          <button class="btn-comprar btn-primary">Comprar</button>
+        </div>
+        <div class="loja-item" data-custo="20" data-tipo="energia">
+          <span class="loja-item-icon">🔋</span>
+          <span class="loja-item-nome">+15 Energia</span>
+          <span class="loja-item-preco">🪙 20</span>
+          <button class="btn-comprar btn-primary">Comprar</button>
+        </div>
+      </div>
+      <button id="btn-fechar-loja" class="btn-hud btn-voltar">← Voltar ao Jogo</button>
+    </div>
+  </div>
+
+  <!-- ===================== POPUPS ===================== -->
+
+  <!-- Popup Tutorial / Desbloqueio -->
+  <div id="popup" class="popup-overlay oculto">
+    <div class="popup-box">
+      <div id="popup-icon" class="popup-icon">🎉</div>
+      <h2 id="popup-titulo">Novo Comando!</h2>
+      <p id="popup-msg">Você desbloqueou um novo comando.</p>
+      <button id="popup-ok" class="btn-primary">OK!</button>
+    </div>
+  </div>
+
+  <!-- Popup Fase Secreta -->
+  <div id="popup-secreta" class="popup-overlay oculto">
+    <div class="popup-box popup-secreta-box">
+      <div class="popup-icon">🔑</div>
+      <h2>FASE SECRETA DESBLOQUEADA!</h2>
+      <p>Você encontrou a chave secreta!<br>Uma porta oculta foi aberta.</p>
+      <button id="popup-secreta-ok" class="btn-primary">Entrar na Fase Secreta!</button>
+    </div>
+  </div>
+
+  <!-- Popup Fase Secreta Instrução -->
+  <div id="popup-instrucao-secreta" class="popup-overlay oculto">
+    <div class="popup-box popup-secreta-box">
+      <div class="popup-icon">⏱️</div>
+      <h2>FASE SECRETA</h2>
+      <p>Você possui <strong id="tempo-secreta-info">30</strong> segundos para montar seus comandos e clicar em EXECUTAR!<br><br>Colete todas as moedas que puder!</p>
+      <div id="timer-display" class="timer-display oculto">⏱ <span id="timer-val">30</span>s</div>
+      <button id="popup-instrucao-ok" class="btn-primary">Começar!</button>
+    </div>
+  </div>
+
+  <!-- Popup Vitória de Fase -->
+  <div id="popup-vitoria" class="popup-overlay oculto">
+    <div class="popup-box">
+      <div class="popup-icon">🏆</div>
+      <h2 id="vitoria-titulo">Fase Concluída!</h2>
+      <p id="vitoria-msg">Você entregou a caixa com sucesso!</p>
+      <div class="vitoria-moedas">+<span id="vitoria-moedas">0</span> 🪙</div>
+      <button id="btn-proxima-fase" class="btn-primary">Próxima Fase →</button>
+    </div>
+  </div>
+
+  <!-- Popup Game Over -->
+  <div id="popup-gameover" class="popup-overlay oculto">
+    <div class="popup-box">
+      <div class="popup-icon">💥</div>
+      <h2>ENERGIA ESGOTADA!</h2>
+      <p>O robô ficou sem energia.<br>Tente novamente com menos movimentos!</p>
+      <button id="btn-reiniciar" class="btn-primary">↺ Reiniciar Fase</button>
+    </div>
+  </div>
+
+  <!-- Flash de dano -->
+  <div id="flash-dano" class="flash-dano oculto"></div>
+
+  <!-- Timer flutuante fase secreta -->
+  <div id="timer-flutuante" class="timer-flutuante oculto">⏱ <span id="timer-flutuante-val">30</span>s</div>
+
+  <script src="script.js"></script>
 </body>
 </html>
