@@ -154,7 +154,7 @@ const FASE_SECRETA = {
 };
 
 /* ═══════════════════════════════════════════════════════════
-   5. ESTADO DO JOGO
+  5. ESTADO DO JOGO
 ═══════════════════════════════════════════════════════════ */
 let estado = {
   jogador:{ nome:'Jogador', moedas:0, faseAtual:0, faseMaxDesbloqueada:0, energia:CONFIG.MAX_ENERGIA },
@@ -383,10 +383,10 @@ function renderizarAjuda() {
 
 
 /* ═══════════════════════════════════════════════════════════
-   10. TUTORIAL INICIAL (Abertura do Jogo)
+  10. TUTORIAL INICIAL (Abertura do Jogo)
 ═══════════════════════════════════════════════════════════ */
 let slideAtual = 0;
-const TOTAL_SLIDES = 5;
+const TOTAL_SLIDES = 3;
 
 function registrarNavTutorial() {
   document.getElementById('tslide-next').addEventListener('click', () => {
@@ -411,7 +411,7 @@ function atualizarNavTutorial() {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   11. FLUXO DE TELAS
+  11. FLUXO DE TELAS
 ═══════════════════════════════════════════════════════════ */
 function onIniciarMissao() {
   const nome = document.getElementById('input-nome').value.trim() || 'Jogador';
@@ -443,7 +443,7 @@ function voltarAoMenu() {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   12. INICIAR / REINICIAR FASE (COM BACKUP DE ENERGIA)
+  12. INICIAR / REINICIAR FASE (COM BACKUP DE ENERGIA)
 ═══════════════════════════════════════════════════════════ */
 function iniciarFase(idx) {
   if (idx >= FASES.length) { mostrarCreditosFinais(); return; }
@@ -513,7 +513,7 @@ function _carregarFase(idx, mostrarDesbloqueio) {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   13. HUD E METAS
+  13. HUD E METAS
 ═══════════════════════════════════════════════════════════ */
 function atualizarHUD() {
   document.getElementById('hud-nome').textContent  = estado.jogador.nome;
@@ -550,7 +550,7 @@ function atualizarMetasHUD(faseIdx) {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   14. CRIAR E RENDERIZAR MAPA
+  14. CRIAR E RENDERIZAR MAPA
 ═══════════════════════════════════════════════════════════ */
 function criarMapa(fase) {
   const mapa = Array.from({length:CONFIG.GRID_SIZE}, () => new Array(CONFIG.GRID_SIZE).fill(TILE.VAZIO));
@@ -598,7 +598,7 @@ function renderizarMapa() {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   15. DESENHO DE TILES
+  15. DESENHO DE TILES
 ═══════════════════════════════════════════════════════════ */
 function desenharParede(x,y,C) {
   ctx.fillStyle='#0c2240'; ctx.fillRect(x,y,C,C);
@@ -635,7 +635,7 @@ function desenharPortaSecreta(x,y,C) {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   16. SISTEMA DE SPRITES
+  16. SISTEMA DE SPRITES
 ═══════════════════════════════════════════════════════════ */
 function desenharInimigo(x,y,C, ini) {
   let spriteId = '';
@@ -690,7 +690,7 @@ function desenharRobo(x,y,C,robo) {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   17. PREVIEW DO CAMINHO
+  17. PREVIEW DO CAMINHO
 ═══════════════════════════════════════════════════════════ */
 function desenharPreviewCaminho() {
   const passos = simularCaminho(estado.programa, estado.robo);
@@ -718,7 +718,7 @@ function simularCaminho(programa, roboInicial) {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   18. COMANDOS DISPONÍVEIS
+  18. COMANDOS DISPONÍVEIS
 ═══════════════════════════════════════════════════════════ */
 const CMD_INFO = {
   dir:      {label:'Direita',  icon:'→', classe:'cmd-dir'},
@@ -788,7 +788,7 @@ function criarBlocoDisponivel(tipo, info) {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   19. PROGRAMA E DRAG & DROP
+  19. PROGRAMA E DRAG & DROP
 ═══════════════════════════════════════════════════════════ */
 function renderizarPrograma() {
   const lista = document.getElementById('lista-programa');
@@ -892,7 +892,7 @@ function toggleModoApagar() {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   22. EXECUTAR COMANDOS E PROCESSAR LÓGICA
+  22. EXECUTAR COMANDOS E PROCESSAR LÓGICA
 ═══════════════════════════════════════════════════════════ */
 async function executarComandos() {
   if (estado.executando||estado.programa.length===0) return;
@@ -955,7 +955,7 @@ function processarComando(tipo) {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   24. INIMIGOS
+  24. INIMIGOS
 ═══════════════════════════════════════════════════════════ */
 function moverInimigos() {
   estado.inimigos.forEach(ini => {
@@ -996,7 +996,7 @@ function mostrarFlashDano() {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   25. MOEDAS / CHAVE / PORTA / FASE SECRETA
+  25. MOEDAS / CHAVE / PORTA / FASE SECRETA
 ═══════════════════════════════════════════════════════════ */
 function coletarMoeda(x,y) { const idx=estado.moedas.findIndex(m=>m.x===x&&m.y===y); if (idx!==-1) { estado.moedas.splice(idx,1); estado.jogador.moedas++; atualizarHUD(); atualizarLojaHUDMoedas(); } }
 function coletarChave(x,y) { if (!estado.chave.coletada&&estado.chave.x===x&&estado.chave.y===y) { estado.chave.coletada=true; if (estado.portaSecreta.x!==undefined) { estado.portaSecreta.visivel=true; setTimeout(()=>document.getElementById('popup-secreta').classList.remove('oculto'),500); } } }
@@ -1031,7 +1031,7 @@ function voltarDeFaseSecreta() {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   26. VITÓRIA / GAME OVER
+  26. VITÓRIA / GAME OVER
 ═══════════════════════════════════════════════════════════ */
 function verificarVitoria() { return estado.caixa && !estado.caixa.visivel && !estado.robo.caixaEquipada; }
 
@@ -1064,7 +1064,7 @@ function mostrarCreditosFinais() { mostrarPopupGenerico('🏆','Você zerou o jo
 function mostrarGameOver() { document.getElementById('popup-gameover').classList.remove('oculto'); }
 
 /* ═══════════════════════════════════════════════════════════
-   27. LOJA DE ENERGIA 
+  27. LOJA DE ENERGIA 
 ═══════════════════════════════════════════════════════════ */
 let lojaAberta=false;
 function toggleLoja() { lojaAberta=!lojaAberta; document.getElementById('loja-painel-corpo').classList.toggle('fechado',!lojaAberta); document.getElementById('btn-toggle-loja').classList.toggle('aberto',lojaAberta); if (lojaAberta) atualizarLojaItens(); }
