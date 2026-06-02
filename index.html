@@ -3,194 +3,278 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>VOLT DELIVERY — Jogo Educacional de Lógica</title>
+  <title>Volt.Delivery — Jogo Educacional de Lógica</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- ===================== TELA DE LOGIN ===================== -->
+  <!-- ═══════════════════════════════════════════════
+       TELA DE LOGIN
+  ═══════════════════════════════════════════════ -->
   <div id="tela-login" class="tela ativa">
+    <div class="login-bg-deco"></div>
     <div class="login-container">
       <div class="login-logo">
-        <span class="robot-icon-big">🤖</span>
-        <h1 class="titulo-logo">VOLT<span class="dot">.DELIVEY</span></h1>
-        <p class="subtitulo">Aprenda lógica programando um robô</p>
+        <div class="logo-icon-wrap">
+          <span class="logo-bolt">⚡</span>
+          <span class="logo-robot">🤖</span>
+        </div>
+        <h1 class="titulo-logo">VOLT<span class="dot">.DELIVERY</span></h1>
+        <p class="subtitulo">Programe o robô · Entregue a caixa · Resolva o desafio</p>
       </div>
       <div class="login-form">
         <label for="input-nome">Seu nome, programador(a):</label>
         <input type="text" id="input-nome" placeholder="Ex: Ada Lovelace" maxlength="20" autocomplete="off" />
         <button id="btn-iniciar" class="btn-primary">▶ INICIAR MISSÃO</button>
       </div>
+      <div class="login-botoes-extra">
+        <button id="btn-sobre"       class="btn-ghost">ℹ SOBRE</button>
+        <button id="btn-apagar-save" class="btn-ghost btn-danger-ghost">🗑 APAGAR PROGRESSO</button>
+      </div>
       <div class="login-deco">
-        <span class="pixel-deco">◈</span><span class="pixel-deco">◉</span><span class="pixel-deco">◈</span>
+        <span class="pixel-deco">◈</span>
+        <span class="pixel-deco">◉</span>
+        <span class="pixel-deco">◈</span>
       </div>
     </div>
   </div>
 
-  <!-- ===================== TELA DO JOGO ===================== -->
+  <!-- ═══════════════════════════════════════════════
+       TELA DO JOGO
+  ═══════════════════════════════════════════════ -->
   <div id="tela-jogo" class="tela">
 
-    <!-- HUD SUPERIOR -->
+    <!-- ── HUD SUPERIOR ── -->
     <header id="hud">
       <div class="hud-left">
-        <span class="hud-robot-icon">🤖</span>
+        <button id="btn-menu" class="btn-hud btn-menu-hud" title="Voltar ao Menu">⌂ MENU</button>
+        <div class="hud-divider"></div>
+        <span class="hud-robot-icon">⚡</span>
         <div class="hud-info">
           <span id="hud-nome" class="hud-nome">Jogador</span>
           <span id="hud-fase" class="hud-fase">FASE 1</span>
         </div>
       </div>
+
       <div class="hud-center">
-        <div class="hud-stat" id="hud-moedas-wrap">
+        <!-- BOTÃO DE TUTORIAL MOVIDO PARA O HUD -->
+        <button id="btn-ajuda-ingame" class="btn-hud-ajuda" title="Ver Manual de Sobrevivência">📖 TUTORIAL</button>
+        
+        <div class="hud-stat" id="hud-moedas-wrap" title="Moedas totais">
           <span class="hud-stat-icon">🪙</span>
           <span id="hud-moedas">0</span>
         </div>
-        <div class="hud-stat" id="hud-energia-wrap">
+        <div class="hud-stat" id="hud-energia-wrap" title="Energia restante">
           <span class="hud-stat-icon">⚡</span>
-          <span id="hud-energia">∞</span>
+          <span id="hud-energia">60/60</span>
         </div>
-        <div class="hud-stat">
+        <div class="hud-stat" title="Comandos usados / limite">
           <span class="hud-stat-icon">📋</span>
-          <span id="hud-cmds">0</span><span class="hud-stat-max" id="hud-cmds-max">/50</span>
+          <span id="hud-cmds">0</span><span class="hud-stat-max" id="hud-cmds-max">/80</span>
+        </div>
+        <!-- Estrelas -->
+        <div class="hud-stat hud-metas" title="Metas de estrelas desta fase" id="hud-metas-wrap">
+          <span id="hud-metas-texto">⭐⭐⭐≤?</span>
         </div>
       </div>
+
       <div class="hud-right">
         <button id="btn-executar" class="btn-hud btn-exec">▶ EXECUTAR</button>
-        <button id="btn-voltar" class="btn-hud btn-voltar">↺ VOLTAR</button>
-        <button id="btn-apagar" class="btn-hud btn-apagar">✕ APAGAR</button>
+        <button id="btn-voltar"   class="btn-hud btn-voltar">↺ REINICIAR</button>
+        <button id="btn-apagar"   class="btn-hud btn-apagar">✕ APAGAR</button>
       </div>
     </header>
 
-    <!-- ÁREA PRINCIPAL -->
+    <!-- ── ÁREA PRINCIPAL: 3 COLUNAS ── -->
     <main id="area-principal">
 
-      <!-- GRID DO JOGO -->
+      <!-- COLUNA A: GRID DO JOGO -->
       <section id="area-grid">
         <div id="grid-container">
           <canvas id="grid-canvas"></canvas>
-          <!-- Preview de caminho desenhado sobre o canvas -->
         </div>
-        <div id="energia-robo-display">⚡ <span id="energia-robo-val">∞</span></div>
+        <div id="energia-robo-display">⚡ <span id="energia-robo-val">60</span></div>
       </section>
 
-      <!-- PAINEL DIREITO -->
-      <aside id="painel-direito">
+      <!-- COLUNA B: COMANDOS DISPONÍVEIS -->
+      <div id="area-comandos">
+        <h3 class="painel-titulo">
+          🎮 COMANDOS
+          <span class="titulo-hint">clique ou arraste</span>
+        </h3>
+        <div id="lista-comandos"></div>
+      </div>
 
-        <!-- COMANDOS DISPONÍVEIS -->
-        <div id="area-comandos">
-          <h3 class="painel-titulo">🎮 COMANDOS</h3>
-          <div id="lista-comandos">
-            <!-- Blocos injetados pelo JS conforme fase -->
+      <!-- COLUNA C: PROGRAMA + LOJA + DICA -->
+      <div id="area-programa-col">
+
+        <!-- Loja -->
+        <div id="area-loja-painel">
+          <div id="loja-header" class="loja-header-bar">
+            <span class="loja-header-icon">🏪</span>
+            <span class="loja-header-titulo">MERCADO TECH</span>
+            <span class="loja-header-moedas">🪙 <span id="loja-hud-moedas">0</span></span>
+            <button id="btn-toggle-loja" class="btn-toggle-loja" title="Abrir/fechar loja">▼</button>
+          </div>
+          <div id="loja-painel-corpo" class="loja-painel-corpo fechado">
+            <div id="loja-itens-inline" class="loja-itens-inline"></div>
+            <div id="loja-feedback" class="loja-feedback oculto"></div>
           </div>
         </div>
 
-        <!-- ÁREA DE PROGRAMAÇÃO -->
+        <!-- Programa -->
         <div id="area-programacao">
-          <h3 class="painel-titulo">💻 PROGRAMA
-            <span id="contador-cmds" class="contador-tag">0/50</span>
+          <h3 class="painel-titulo">
+            💻 PROGRAMA
+            <span id="contador-cmds" class="contador-tag">0/80</span>
           </h3>
           <div id="zona-drop" class="zona-drop">
-            <div id="lista-programa" class="lista-programa">
-              <!-- Blocos do programa montado pelo jogador -->
+            <div id="lista-programa" class="lista-programa"></div>
+            <div id="drop-hint" class="drop-hint">
+              Clique nos comandos ao lado<br>ou arraste aqui
             </div>
-            <div id="drop-hint" class="drop-hint">Arraste comandos aqui</div>
           </div>
         </div>
 
-        <!-- TUTORIAL -->
+        <!-- Dica / Tutorial Rápido -->
         <div id="area-tutorial">
-          <div id="tutorial-texto" class="tutorial-box">
+          <div class="tutorial-box">
             <span class="tutorial-icon">💡</span>
             <span id="tutorial-msg">Monte seus comandos e clique em Executar!</span>
           </div>
         </div>
 
-      </aside>
+      </div>
     </main>
 
+    <!-- ── SELETOR DE FASES (RODAPÉ) ── -->
+    <footer id="seletor-fases">
+      <span class="seletor-label">FASES:</span>
+      <div id="lista-fases-botoes"></div>
+    </footer>
+
   </div>
 
-  <!-- ===================== TELA DA LOJA ===================== -->
-  <div id="tela-loja" class="tela">
-    <div class="loja-container">
-      <h2 class="painel-titulo loja-titulo">🏪 MERCADO TECH</h2>
-      <div class="loja-moedas">Suas moedas: 🪙 <span id="loja-moedas">0</span></div>
-      <div class="loja-itens">
-        <div class="loja-item" data-custo="10" data-tipo="energia">
-          <span class="loja-item-icon">⚡</span>
-          <span class="loja-item-nome">+5 Energia</span>
-          <span class="loja-item-preco">🪙 10</span>
-          <button class="btn-comprar btn-primary">Comprar</button>
+  <!-- ═══════════════════════════════════════════════
+       POPUPS
+  ═══════════════════════════════════════════════ -->
+
+  <!-- Popup: MANUAL/TUTORIAL IN-GAME -->
+  <div id="popup-ajuda-ingame" class="popup-overlay oculto">
+    <div class="popup-box popup-ajuda-box">
+      <button id="btn-fechar-ajuda" class="btn-fechar-popup" title="Fechar">✖</button>
+      
+      <h2 id="ajuda-titulo">TUTORIAL DE ...</h2>
+      
+      <div class="ajuda-layout">
+        <!-- Sidebar Esquerda -->
+        <aside class="ajuda-sidebar">
+          <button class="btn-ajuda-tab ativo" data-tab="comandos">Comandos</button>
+          <button class="btn-ajuda-tab" data-tab="energia">Energia</button>
+          <button class="btn-ajuda-tab" data-tab="inimigos">Inimigos</button>
+          <button class="btn-ajuda-tab" data-tab="segredos">Segredos</button>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="ajuda-main">
+          <div class="ajuda-content" id="ajuda-content">
+            <!-- JS injeta os slides aqui -->
+          </div>
+          
+          <div class="tutorial-nav ajuda-nav">
+            <button id="ajuda-prev" class="btn-ghost" disabled>← Anterior</button>
+            <span id="ajuda-dots" class="tslide-dots"></span>
+            <button id="ajuda-next" class="btn-primary">Próximo →</button>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tutorial inicial (só aparece 1 vez ao iniciar o jogo todo) -->
+  <div id="popup-tutorial-inicial" class="popup-overlay oculto">
+    <div class="popup-box popup-tutorial-box">
+      <div class="popup-icon">⚡</div>
+      <h2>BEM-VINDO AO VOLT.DELIVERY!</h2>
+      <div class="tutorial-slides-wrap">
+        <div class="tutorial-slide ativa" id="tslide-0">
+          <p>Você controla um <strong>robô entregador</strong>! O objetivo é <strong>pegar a caixa 📦</strong> e levá-la até o <strong>ponto de entrega ▼</strong>.</p>
+          <div class="tutorial-img">📦 ➜ 🤖 ➜ ▼</div>
         </div>
-        <div class="loja-item" data-custo="20" data-tipo="energia">
-          <span class="loja-item-icon">🔋</span>
-          <span class="loja-item-nome">+15 Energia</span>
-          <span class="loja-item-preco">🪙 20</span>
-          <button class="btn-comprar btn-primary">Comprar</button>
+        <div class="tutorial-slide" id="tslide-1">
+          <p>Você <strong>não move o robô pelo teclado</strong>. Monte uma <strong>sequência de comandos</strong> no painel da direita e clique em <strong>▶ EXECUTAR</strong>.</p>
+          <div class="tutorial-img">↑ → ↓ ← · EXECUTAR</div>
+        </div>
+        <div class="tutorial-slide" id="tslide-2">
+          <p>A energia é <strong>persistente</strong> entre as fases! Gerencie bem. Ganhe <strong>⭐ estrelas</strong> usando menos comandos para receber mais moedas e comprar recargas na <strong>🏪 Loja</strong>!</p>
+          <div class="tutorial-img">⭐⭐⭐ → MAX 🪙 · ⭐⭐ → MED 🪙 · ⭐ → MIN 🪙</div>
         </div>
       </div>
-      <button id="btn-fechar-loja" class="btn-hud btn-voltar">← Voltar ao Jogo</button>
+      <div class="tutorial-nav">
+        <button id="tslide-prev" class="btn-ghost" disabled>← Anterior</button>
+        <span id="tslide-indicator" class="tslide-dots"></span>
+        <button id="tslide-next" class="btn-primary">Próximo →</button>
+      </div>
     </div>
   </div>
 
-  <!-- ===================== POPUPS ===================== -->
+  <!-- Demais Popups Específicos -->
+  <div id="popup" class="popup-overlay oculto"><div class="popup-box"><div id="popup-icon" class="popup-icon">🎉</div><h2 id="popup-titulo">Título</h2><p id="popup-msg">Mensagem</p><button id="popup-ok" class="btn-primary">OK, entendi!</button></div></div>
+  <div id="popup-secreta" class="popup-overlay oculto"><div class="popup-box popup-secreta-box"><div class="popup-icon">🔑</div><h2>FASE SECRETA DESBLOQUEADA!</h2><p>Você encontrou a chave! Uma porta oculta apareceu no mapa.</p><button id="popup-secreta-ok" class="btn-primary">Entrar na Fase Secreta!</button></div></div>
+  <div id="popup-instrucao-secreta" class="popup-overlay oculto"><div class="popup-box popup-secreta-box"><div class="popup-icon">⏱️</div><h2>FASE SECRETA</h2><p>Você tem <strong id="tempo-secreta-info">30</strong> segundos para montar seus comandos e clicar em EXECUTAR! Colete o máximo de moedas!</p><button id="popup-instrucao-ok" class="btn-primary">Começar!</button></div></div>
+  
+  <div id="popup-vitoria" class="popup-overlay oculto"><div class="popup-box popup-vitoria-box"><div class="popup-icon">🏆</div><h2 id="vitoria-titulo">Fase Concluída!</h2><div id="vitoria-estrelas" class="vitoria-estrelas">⭐⭐⭐</div><p id="vitoria-msg">Você entregou a caixa!</p><div class="vitoria-stats"><div class="vitoria-stat"><span class="vitoria-stat-label">Comandos usados</span><span id="vitoria-cmds" class="vitoria-stat-val">0</span></div><div class="vitoria-stat"><span class="vitoria-stat-label">Moedas ganhas</span><span id="vitoria-moedas" class="vitoria-stat-val moedas-val">+0 🪙</span></div><div class="vitoria-stat"><span class="vitoria-stat-label">Total de moedas</span><span id="vitoria-moedas-total" class="vitoria-stat-val">0 🪙</span></div></div><div class="vitoria-botoes"><button id="btn-replay-fase" class="btn-ghost">↺ Jogar de novo</button><button id="btn-proxima-fase" class="btn-primary">Próxima Fase →</button></div></div></div>
+  
+  <div id="popup-gameover" class="popup-overlay oculto"><div class="popup-box"><div class="popup-icon">💥</div><h2>ENERGIA ESGOTADA!</h2><p>O robô ficou sem energia. Use a 🏪 Loja para comprar energia ou planeje melhor!</p><div class="vitoria-botoes"><button id="btn-reiniciar" class="btn-primary">↺ Reiniciar Fase</button></div></div></div>
+  <div id="popup-apagar-save" class="popup-overlay oculto"><div class="popup-box"><div class="popup-icon">⚠️</div><h2>APAGAR PROGRESSO?</h2><p>Isso irá apagar todo o progresso salvo. <strong>Não pode ser desfeito!</strong></p><div class="vitoria-botoes"><button id="btn-cancelar-apagar" class="btn-ghost">Cancelar</button><button id="btn-confirmar-apagar" class="btn-primary btn-danger">🗑 Apagar Tudo</button></div></div></div>
 
-  <!-- Popup Tutorial / Desbloqueio -->
-  <div id="popup" class="popup-overlay oculto">
-    <div class="popup-box">
-      <div id="popup-icon" class="popup-icon">🎉</div>
-      <h2 id="popup-titulo">Novo Comando!</h2>
-      <p id="popup-msg">Você desbloqueou um novo comando.</p>
-      <button id="popup-ok" class="btn-primary">OK!</button>
+  <!-- 
+  ======================================================================
+  ⬇️ CLEITON, AQUI FICA AS INFORMAÇÕES SOBRE O JOGO (BOTÃO SOBRE) ⬇️
+  ======================================================================
+  -->
+  <div id="popup-sobre" class="popup-overlay oculto">
+    <div class="popup-box popup-sobre-box">
+      <div class="popup-icon">⚡</div>
+      <h2>VOLT.DELIVERY</h2>
+      <div class="sobre-conteudo">
+        <p><strong>Versão:</strong> BETA V2.0 </p>
+        <p><strong>Desenvolvedor:</strong> Erisvaldo Cleiton </p>
+        <p><strong>Descrição:</strong> Volt.Delivery é um jogo educacional focado no desenvolvimento do raciocínio lógico e na introdução aos conceitos de programação visual. O jogador deve criar algoritmos passo a passo para guiar o robô por labirintos desafiadores, otimizando rotas para alcançar as três estrelas, gerenciando inteligentemente o consumo de bateria persistente e calculando o tempo exato para desviar dos inimigos.<br><br>Projetado para ensinar fundamentos da computação e lógica matemática de forma interativa, visual e imersiva!</p>
+      </div>
+      <button id="popup-sobre-ok" class="btn-primary">Fechar</button>
     </div>
   </div>
+  <!-- ⬆️ FIM DAS INFORMAÇÕES SOBRE O JOGO ⬆️ -->
 
-  <!-- Popup Fase Secreta -->
-  <div id="popup-secreta" class="popup-overlay oculto">
-    <div class="popup-box popup-secreta-box">
-      <div class="popup-icon">🔑</div>
-      <h2>FASE SECRETA DESBLOQUEADA!</h2>
-      <p>Você encontrou a chave secreta!<br>Uma porta oculta foi aberta.</p>
-      <button id="popup-secreta-ok" class="btn-primary">Entrar na Fase Secreta!</button>
-    </div>
-  </div>
 
-  <!-- Popup Fase Secreta Instrução -->
-  <div id="popup-instrucao-secreta" class="popup-overlay oculto">
-    <div class="popup-box popup-secreta-box">
-      <div class="popup-icon">⏱️</div>
-      <h2>FASE SECRETA</h2>
-      <p>Você possui <strong id="tempo-secreta-info">30</strong> segundos para montar seus comandos e clicar em EXECUTAR!<br><br>Colete todas as moedas que puder!</p>
-      <div id="timer-display" class="timer-display oculto">⏱ <span id="timer-val">30</span>s</div>
-      <button id="popup-instrucao-ok" class="btn-primary">Começar!</button>
-    </div>
-  </div>
-
-  <!-- Popup Vitória de Fase -->
-  <div id="popup-vitoria" class="popup-overlay oculto">
-    <div class="popup-box">
-      <div class="popup-icon">🏆</div>
-      <h2 id="vitoria-titulo">Fase Concluída!</h2>
-      <p id="vitoria-msg">Você entregou a caixa com sucesso!</p>
-      <div class="vitoria-moedas">+<span id="vitoria-moedas">0</span> 🪙</div>
-      <button id="btn-proxima-fase" class="btn-primary">Próxima Fase →</button>
-    </div>
-  </div>
-
-  <!-- Popup Game Over -->
-  <div id="popup-gameover" class="popup-overlay oculto">
-    <div class="popup-box">
-      <div class="popup-icon">💥</div>
-      <h2>ENERGIA ESGOTADA!</h2>
-      <p>O robô ficou sem energia.<br>Tente novamente com menos movimentos!</p>
-      <button id="btn-reiniciar" class="btn-primary">↺ Reiniciar Fase</button>
-    </div>
-  </div>
-
-  <!-- Flash de dano -->
   <div id="flash-dano" class="flash-dano oculto"></div>
-
-  <!-- Timer flutuante fase secreta -->
   <div id="timer-flutuante" class="timer-flutuante oculto">⏱ <span id="timer-flutuante-val">30</span>s</div>
+
+  <!-- 
+  ═══════════════════════════════════════════════════════════
+       SISTEMA DE SPRITES (IMAGENS PERSONALIZADAS)
+  ═══════════════════════════════════════════════════════════ 
+  -->
+  <div style="display: none;">
+    <!-- ROBÔ SEM CAIXA -->
+    <img id="robo-frente"   src="assets/robo_frente.png">
+    <img id="robo-costas"   src="assets/robo_costas.png">
+    <img id="robo-esq"      src="assets/robo_esq.png">
+    <img id="robo-dir"      src="assets/robo_dir.png">
+
+    <!-- ROBÔ COM CAIXA -->
+    <img id="robo-caixa-frente"   src="assets/robo_caixa_frente.png">
+    <img id="robo-caixa-costas"   src="assets/robo_caixa_costas.png">
+    <img id="robo-caixa-esq"      src="assets/robo_caixa_esq.png">
+    <img id="robo-caixa-dir"      src="assets/robo_caixa_dir.png">
+
+    <!-- INIMIGO -->
+    <img id="inimigo-frente" src="assets/inimigo_frente.png">
+    <img id="inimigo-costas" src="assets/inimigo_costas.png">
+    <img id="inimigo-esq"    src="assets/inimigo_esq.png">
+    <img id="inimigo-dir"    src="assets/inimigo_dir.png">
+  </div>
 
   <script src="script.js"></script>
 </body>
