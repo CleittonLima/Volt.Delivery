@@ -1,7 +1,5 @@
 # ⚡ Volt.Delivery
 
-[![Jogue Agora](https://img.shields.io/badge/JOGAR_AGORA-%2300f0ff.svg?style=for-the-badge&logo=google-chrome&logoColor=black)](https://cleittonlima.github.io/Volt.Delivery/)
-
 > **Volt.Delivery** é um jogo educacional de lógica e programação visual, construído inteiramente do zero utilizando **HTML, CSS e JavaScript puros**. 
 
 O objetivo do jogo é desenvolver o raciocínio computacional. O jogador não controla o robô diretamente, mas sim cria um algoritmo passo a passo (usando blocos de comando) para guiar o personagem por um grid 2D, otimizando rotas, poupando energia e desviando de inimigos sincronizados.
