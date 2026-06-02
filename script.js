@@ -24,14 +24,14 @@ const TILE = { VAZIO:0, PAREDE:1, OBSTACULO:2, ENTREGA:3 };
    2. CONFIGURAÇÃO MANUAL DE FASES (ESTRELAS E MOEDAS)
 ═══════════════════════════════════════════════════════════ */
 const LEVEL_CONFIG = {
-  0: { stars: { three: 12, two: 16, one: 20 }, rewards: { three: 100, two: 60, one: 30 } },
-  1: { stars: { three: 22, two: 35, one: 50 }, rewards: { three: 120, two: 70, one: 40 } },
-  2: { stars: { three: 26, two: 38, one: 60 }, rewards: { three: 150, two: 80, one: 50 } },
-  3: { stars: { three: 30, two: 45, one: 65 }, rewards: { three: 200, two: 100, one: 60 } },
-  4: { stars: { three: 32, two: 48, one: 70 }, rewards: { three: 250, two: 120, one: 80 } },
-  5: { stars: { three: 38, two: 55, one: 75 }, rewards: { three: 300, two: 150, one: 100 } },
-  6: { stars: { three: 42, two: 60, one: 80 }, rewards: { three: 400, two: 200, one: 120 } },
-  7: { stars: { three: 50, two: 68, one: 80 }, rewards: { three: 500, two: 250, one: 150 } }
+  0: { stars: { three: 9, two: 10, one: 11 }, rewards: { three: 15, two: 12, one: 10 } },
+  1: { stars: { three: 20, two: 25, one: 30 }, rewards: { three: 15, two: 12, one: 10 } },
+  2: { stars: { three: 18, two: 20, one: 24 }, rewards: { three: 20, two: 15, one: 10 } },
+  3: { stars: { three: 17, two: 20, one: 24 }, rewards: { three: 20, two: 15, one: 10 } },
+  4: { stars: { three: 23, two: 25, one: 30 }, rewards: { three: 20, two: 15, one: 10 } },
+  5: { stars: { three: 21, two: 25, one: 30 }, rewards: { three: 25, two: 15, one: 10 } },
+  6: { stars: { three: 25, two: 27, one: 30 }, rewards: { three: 25, two: 15, one: 10 } },
+  7: { stars: { three: 22, two: 25, one: 30 }, rewards: { three: 25, two: 15, one: 10 } }
 };
 
 /* ═══════════════════════════════════════════════════════════
@@ -149,7 +149,7 @@ const FASE_SECRETA = {
   nome:'FASE SECRETA ⭐', robot:{x:0,y:0}, caixa:null, entrega:null,
   paredes:[], obstaculos:[{x:4,y:4},{x:5,y:4},{x:4,y:5},{x:5,y:5}],
   moedas:[{x:2,y:0},{x:4,y:0},{x:6,y:0},{x:8,y:0},{x:0,y:2},{x:9,y:2},{x:0,y:7},{x:9,y:7},{x:3,y:3},{x:6,y:3},{x:3,y:6},{x:6,y:6},{x:1,y:9},{x:5,y:9},{x:9,y:9},{x:2,y:5},{x:7,y:2},{x:7,y:7}],
-  inimigos:[], maxCmds:15, tempoLimite:30,
+  inimigos:[], maxCmds:80, tempoLimite:30,
   tutorial:'Fase secreta! Colete o máximo de moedas antes do tempo acabar!',
 };
 
