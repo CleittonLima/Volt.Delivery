@@ -1,5 +1,5 @@
 /**
- * VOLT.DELIVERY — Script Principal v4.5
+ * VOLT.DELIVERY — Script Principal v4.6
  * ─────────────────────────────────────
  */
 
@@ -154,10 +154,15 @@ const FASE_SECRETA = {
 };
 
 /* ═══════════════════════════════════════════════════════════
-  5. ESTADO DO JOGO
+   5. ESTADO DO JOGO
+
+   ★ NOVO CAMPO: estado.jogador.dificuldade
+     Pode ser 'padrao' (mostra o preview do caminho) ou
+     'dificil' (não mostra). Definido na tela de login pelo
+     seletor de dificuldade e salvo no LocalStorage.
 ═══════════════════════════════════════════════════════════ */
 let estado = {
-  jogador:{ nome:'Jogador', moedas:0, faseAtual:0, faseMaxDesbloqueada:0, energia:CONFIG.MAX_ENERGIA },
+  jogador:{ nome:'Jogador', moedas:0, faseAtual:0, faseMaxDesbloqueada:0, energia:CONFIG.MAX_ENERGIA, dificuldade:'padrao' },
   robo:{ x:0, y:0, caixaEquipada:false, dir:'dir' },
   caixa:{ x:-1, y:-1, visivel:false },
   chave:{ x:-1, y:-1, coletada:true },
@@ -245,10 +250,14 @@ function carregarProgresso() {
     estado.jogador.faseAtual           = d.faseAtual           || 0;
     estado.jogador.faseMaxDesbloqueada = d.faseMaxDesbloqueada || 0;
     estado.jogador.energia             = d.energia !== undefined ? d.energia : CONFIG.MAX_ENERGIA; 
+    estado.jogador.dificuldade         = d.dificuldade         || 'padrao';
     estado.estrelasFases               = d.estrelasFases       || {};
     estado.comandosDesbloqueados       = d.comandosDesbloqueados || ['dir','pegar','entregar'];
     const inp = document.getElementById('input-nome');
     if (inp && d.nome) inp.value = d.nome;
+
+    /* Refletir a dificuldade salva nos botões da tela de login */
+    selecionarDificuldade(estado.jogador.dificuldade, false);
   } catch(e) { console.warn('Erro ao carregar:', e); }
 }
 
@@ -259,6 +268,7 @@ function salvarProgresso() {
     faseAtual:             estado.jogador.faseAtual,
     faseMaxDesbloqueada:   estado.jogador.faseMaxDesbloqueada,
     energia:               estado.jogador.energia,
+    dificuldade:           estado.jogador.dificuldade,
     estrelasFases:         estado.estrelasFases,
     comandosDesbloqueados: estado.comandosDesbloqueados,
   }));
@@ -267,10 +277,36 @@ function salvarProgresso() {
 function apagarProgresso() {
   localStorage.removeItem('voltDeliveryData');
   localStorage.removeItem('voltTutorialVisto');
-  estado.jogador = { nome:'Jogador', moedas:0, faseAtual:0, faseMaxDesbloqueada:0, energia:CONFIG.MAX_ENERGIA };
+  estado.jogador = { nome:'Jogador', moedas:0, faseAtual:0, faseMaxDesbloqueada:0, energia:CONFIG.MAX_ENERGIA, dificuldade:'padrao' };
   estado.estrelasFases = {};
   estado.comandosDesbloqueados = ['dir','pegar','entregar'];
   document.getElementById('input-nome').value = '';
+  selecionarDificuldade('padrao', false);
+}
+
+/* ═══════════════════════════════════════════════════════════
+  8. SELEÇÃO DE DIFICULDADE (NOVO)
+  ─────────────────────────────────────────────────────────
+  selecionarDificuldade(valor, salvar)
+    valor  → 'padrao' | 'dificil'
+    salvar → se true, persiste no LocalStorage imediatamente
+             (usado quando o jogador clica em um botão).
+             Quando false, é usado apenas para refletir o
+             estado já carregado do save (não salva de novo).
+
+  A dificuldade 'dificil' desativa o preview do caminho
+  (ver função desenharPreviewCaminho() mais abaixo, que
+  verifica estado.jogador.dificuldade antes de desenhar).
+═══════════════════════════════════════════════════════════ */
+function selecionarDificuldade(valor, salvar = true) {
+  estado.jogador.dificuldade = valor;
+
+  /* Atualizar visual dos botões na tela de login */
+  document.querySelectorAll('.btn-dificuldade').forEach(btn => {
+    btn.classList.toggle('ativo', btn.dataset.dificuldade === valor);
+  });
+
+  if (salvar) salvarProgresso();
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -307,6 +343,15 @@ function registrarEventos() {
   
   registrarNavTutorial();
   registrarEventosAjuda(); 
+
+  /* ── Seletor de dificuldade (NOVO) ──
+     Escuta o clique em cada um dos 2 botões e chama
+     selecionarDificuldade() com o valor do data-attribute. */
+  document.querySelectorAll('.btn-dificuldade').forEach(btn => {
+    btn.addEventListener('click', () => {
+      selecionarDificuldade(btn.dataset.dificuldade, true);
+    });
+  });
   
   document.getElementById('loja-header').addEventListener('click', toggleLoja);
   
@@ -691,8 +736,14 @@ function desenharRobo(x,y,C,robo) {
 
 /* ═══════════════════════════════════════════════════════════
   17. PREVIEW DO CAMINHO
+
+  ★ A dificuldade 'dificil' desativa completamente este
+    preview: a função retorna imediatamente sem desenhar
+    nada caso estado.jogador.dificuldade === 'dificil'.
 ═══════════════════════════════════════════════════════════ */
 function desenharPreviewCaminho() {
+  if (estado.jogador.dificuldade === 'dificil') return;
+
   const passos = simularCaminho(estado.programa, estado.robo);
   if (passos.length < 2) return;
   const C = CONFIG.CELL_SIZE;

@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════
-   VOLT.DELIVERY — CSS v4.5 (HUD e Tutorial Ajustados)
+   VOLT.DELIVERY — CSS v4.6 (+ Seletor de Dificuldade)
 ═══════════════════════════════════════════════════════════ */
 
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap');
@@ -54,6 +54,70 @@ body::after { content: ''; position: fixed; inset: 0; background: repeating-line
 .pixel-deco:nth-child(2) { animation-delay: .5s; }
 .pixel-deco:nth-child(3) { animation-delay: 1s; }
 @keyframes blink { 0%,100%{opacity:.35} 50%{opacity:1} }
+
+/* ═══════════════════════════════════════════════════════════
+   SELETOR DE DIFICULDADE (NOVO)
+   ─────────────────────────────────────────────────────────
+   Dois cartões clicáveis lado a lado: Padrão e Difícil.
+   O cartão ativo recebe a classe ".ativo" via JS
+   (ver função selecionarDificuldade() em script.js).
+═══════════════════════════════════════════════════════════ */
+.dificuldade-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+.dificuldade-label {
+  font-size: 11px;
+  color: var(--accent-cyan);
+  letter-spacing: 1px;
+}
+.dificuldade-botoes {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+.btn-dificuldade {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: var(--bg-dark);
+  border: 1px solid var(--border-glow);
+  border-radius: var(--radius);
+  padding: 12px 8px;
+  cursor: pointer;
+  transition: border-color .2s, box-shadow .2s, transform .15s, background .2s;
+  font-family: var(--font-mono);
+}
+.btn-dificuldade:hover {
+  border-color: var(--accent-cyan);
+  transform: translateY(-2px);
+}
+.btn-dificuldade.ativo {
+  border-color: var(--accent-cyan);
+  background: #003355;
+  box-shadow: 0 0 16px #00f0ff44;
+}
+/* Cartão "Difícil" usa tom laranja/vermelho quando ativo, para reforçar o risco */
+.btn-dificuldade[data-dificuldade="dificil"].ativo {
+  border-color: var(--accent-orange);
+  background: #3a1a00;
+  box-shadow: 0 0 16px #ff8c0044;
+}
+.dificuldade-icon { font-size: 22px; }
+.dificuldade-nome {
+  font-family: var(--font-pixel);
+  font-size: 9px;
+  color: var(--text-primary);
+  letter-spacing: 1px;
+}
+.dificuldade-desc {
+  font-size: 10px;
+  color: var(--text-dim);
+}
 
 /* ── BOTÕES GLOBAIS ── */
 .btn-primary { background: linear-gradient(135deg,#00c8ff,#00f5aa); border: none; border-radius: var(--radius); padding: 11px 22px; color: #000; font-family: var(--font-pixel); font-size: 9px; cursor: pointer; letter-spacing: 1px; transition: transform .1s, box-shadow .2s; box-shadow: 0 4px 18px #00f0ff33; white-space: nowrap; }

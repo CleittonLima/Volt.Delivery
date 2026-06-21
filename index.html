@@ -25,6 +25,36 @@
       <div class="login-form">
         <label for="input-nome">Seu nome, programador(a):</label>
         <input type="text" id="input-nome" placeholder="Ex: Ada Lovelace" maxlength="20" autocomplete="off" />
+
+        <!-- ═══════════════════════════════════════════════
+             SELETOR DE DIFICULDADE
+             ─────────────────────────────────────────────
+             Padrão  → mostra o preview do caminho (linha
+                       tracejada) antes de executar.
+             Difícil → NÃO mostra o preview do caminho.
+                       O jogador precisa planejar de cabeça.
+
+             A escolha é salva em estado.jogador.dificuldade
+             e persiste entre fases via LocalStorage.
+             Pode ser trocada a qualquer momento voltando
+             para esta tela (botão MENU dentro do jogo).
+        ═══════════════════════════════════════════════ -->
+        <div class="dificuldade-wrap">
+          <label class="dificuldade-label">Dificuldade:</label>
+          <div class="dificuldade-botoes" id="dificuldade-botoes">
+            <button type="button" class="btn-dificuldade ativo" data-dificuldade="padrao">
+              <span class="dificuldade-icon">🗺️</span>
+              <span class="dificuldade-nome">Padrão</span>
+              <span class="dificuldade-desc">Mostra o caminho</span>
+            </button>
+            <button type="button" class="btn-dificuldade" data-dificuldade="dificil">
+              <span class="dificuldade-icon">🔥</span>
+              <span class="dificuldade-nome">Difícil</span>
+              <span class="dificuldade-desc">Sem preview</span>
+            </button>
+          </div>
+        </div>
+
         <button id="btn-iniciar" class="btn-primary">▶ INICIAR MISSÃO</button>
       </div>
       <div class="login-botoes-extra">
@@ -40,7 +70,7 @@
   </div>
 
   <!-- ═══════════════════════════════════════════════
-       TELA DO JOGO
+  TELA DO JOGO
   ═══════════════════════════════════════════════ -->
   <div id="tela-jogo" class="tela">
 
@@ -156,7 +186,7 @@
   </div>
 
   <!-- ═══════════════════════════════════════════════
-       POPUPS
+  POPUPS
   ═══════════════════════════════════════════════ -->
 
   <!-- Popup: MANUAL/TUTORIAL IN-GAME -->
@@ -230,7 +260,7 @@
 
   <!-- 
   ======================================================================
-  ⬇️ CLEITON, AQUI FICA AS INFORMAÇÕES SOBRE O JOGO (BOTÃO SOBRE) ⬇️
+  AQUI FICA AS INFORMAÇÕES SOBRE O JOGO (BOTÃO SOBRE)
   ======================================================================
   -->
   <div id="popup-sobre" class="popup-overlay oculto">
@@ -246,15 +276,13 @@
       <button id="popup-sobre-ok" class="btn-primary">Fechar</button>
     </div>
   </div>
-  <!-- ⬆️ FIM DAS INFORMAÇÕES SOBRE O JOGO ⬆️ -->
-
 
   <div id="flash-dano" class="flash-dano oculto"></div>
   <div id="timer-flutuante" class="timer-flutuante oculto">⏱ <span id="timer-flutuante-val">30</span>s</div>
 
   <!-- 
   ═══════════════════════════════════════════════════════════
-       SISTEMA DE SPRITES (IMAGENS PERSONALIZADAS)
+  SISTEMA DE SPRITES
   ═══════════════════════════════════════════════════════════ 
   -->
   <div style="display: none;">
